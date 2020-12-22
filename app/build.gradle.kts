@@ -16,6 +16,7 @@ plugins {
 repositories {
     // Use JCenter for resolving dependencies.
     jcenter()
+    mavenLocal()
     maven {
         name = "GitHubPackages"
         url = uri("https://maven.pkg.github.com/ModelingValueGroup/demo-lib")
