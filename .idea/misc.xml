@@ -6,6 +6,7 @@
     <option name="numChars" value="15" />
     <option name="caseSensitive" value="false" />
   </component>
+  <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="IntelliTail">
     <property name="buffer-wrap" value="false" />
     <property name="buffer-size" value="50" />
@@ -37,7 +38,7 @@
     <option name="LAST_EDITED_MODULE_NAME" />
     <option name="LAST_EDITED_TAB_NAME" />
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_5" />
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK" />
   <component name="SvnConfiguration" maxAnnotateRevisions="500">
     <option name="USER" value="" />
     <option name="PASSWORD" value="" />
