@@ -5,15 +5,25 @@
  * For more details take a look at the 'Building Java & JVM projects' chapter in the Gradle
  * User Manual available at https://docs.gradle.org/6.7.1/userguide/building_java_projects.html
  */
+val ALLREP_TOKEN: String = System.getenv("ALLREP_TOKEN") ?: "DRY"
 
 plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     application
+    `maven-publish`
 }
 
 repositories {
     // Use JCenter for resolving dependencies.
     jcenter()
+    maven {
+        name = "GitHubPackages"
+        url = uri("https://maven.pkg.github.com/ModelingValueGroup/demo-lib")
+        credentials {
+            username = "" // can be anything but plugin requires it
+            password = ALLREP_TOKEN
+        }
+    }
 }
 
 dependencies {
@@ -25,6 +35,7 @@ dependencies {
 
     // This dependency is used by the application.
     implementation("com.google.guava:guava:29.0-jre")
+    implementation("demo-lib:lib:1.0.0")
 }
 
 application {
