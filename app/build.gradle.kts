@@ -5,7 +5,7 @@
  * For more details take a look at the 'Building Java & JVM projects' chapter in the Gradle
  * User Manual available at https://docs.gradle.org/6.7.1/userguide/building_java_projects.html
  */
-val ALLREP_TOKEN: String = System.getenv("ALLREP_TOKEN") ?: "DRY"
+val TOKEN: String = System.getenv("TOKEN") ?: "DRY"
 
 plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
@@ -21,7 +21,7 @@ repositories {
         url = uri("https://maven.pkg.github.com/ModelingValueGroup/demo-lib")
         credentials {
             username = "" // can be anything but plugin requires it
-            password = ALLREP_TOKEN
+            password = TOKEN
         }
     }
 }
