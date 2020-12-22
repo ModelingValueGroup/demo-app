@@ -35,7 +35,7 @@ dependencies {
 
     // This dependency is used by the application.
     implementation("com.google.guava:guava:29.0-jre")
-    implementation("demo-lib:lib:1.0.0")
+    implementation("demo-lib:lib:2.0.0")
 }
 
 application {
