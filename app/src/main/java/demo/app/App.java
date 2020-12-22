@@ -12,7 +12,7 @@ public class App {
 
     public static void main(String[] args) {
         Library library = new Library();
-        if (library.someLibraryMethod() && library.plugh()) {
+        if (library.someLibraryMethod() && library.plughplugh()) {
             System.out.println(new App().getGreeting());
         }
     }
