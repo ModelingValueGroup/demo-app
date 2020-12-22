@@ -8,7 +8,7 @@
 val VERSION = "1.0.0"
 val CI: Boolean = "true".equals(System.getenv("CI"))
 val TOKEN: String = System.getenv("TOKEN") ?: "DRY"
-val GITHUB_REF: String = System.getenv("GITHUB_REF") ?: "local"
+val GITHUB_REF: String = File(".git/HEAD").readLines()[0].replaceFirst(Regex("^ref: "),"")
 val isMaster: Boolean = GITHUB_REF.equals("refs/heads/master")
 val isLocal: Boolean = !CI
 val snapshotVersion: String = "0." + String.format("%08x", GITHUB_REF.hashCode()) + "-SNAPSHOT"
@@ -17,6 +17,10 @@ val demoLibVersion = if (isMaster && !isLocal) "2.0.0" else snapshotVersion
 
 group = "demo-app"
 version = if (isMaster && !isLocal) VERSION else snapshotVersion
+
+println("@@@@@@@@@@@     GITHUB_REF=$GITHUB_REF")
+println("@@@@@@@@@@@        version=$version")
+println("@@@@@@@@@@@ demoLibVersion=$demoLibVersion")
 
 plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
