@@ -13,7 +13,7 @@ val isMaster: Boolean = GITHUB_REF.equals("refs/heads/master")
 val isLocal: Boolean = !CI
 val snapshotVersion: String = "0." + String.format("%08x", GITHUB_REF.hashCode()) + "-SNAPSHOT"
 
-val demoLibVersion = if (isMaster && !isLocal) "2.0.0" else snapshotVersion
+val demoLibVersion = if (isMaster && !isLocal) "3.0.0" else snapshotVersion
 
 group = "demo-app"
 version = if (isMaster && !isLocal) VERSION else snapshotVersion
