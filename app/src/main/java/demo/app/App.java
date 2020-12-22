@@ -11,7 +11,7 @@ public class App {
     }
 
     public static void main(String[] args) {
-        if (new Library().someLibraryMethod()) {
+        if (new Library().master()) {
             System.out.println(new App().getGreeting());
         }
     }
