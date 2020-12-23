@@ -11,8 +11,7 @@ public class App {
     }
 
     public static void main(String[] args) {
-        Library library = new Library();
-        if (library.someLibraryMethod() && library.exper()) {
+        if (new Library().experiment()) {
             System.out.println(new App().getGreeting());
         }
     }
