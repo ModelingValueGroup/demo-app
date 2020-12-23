@@ -5,22 +5,44 @@
  * For more details take a look at the 'Building Java & JVM projects' chapter in the Gradle
  * User Manual available at https://docs.gradle.org/6.7.1/userguide/building_java_projects.html
  */
-val VERSION = "1.0.0"
+val VERSION: String by project
+val GROUP: String by project
+val COMPANY: String by project
+val dep1: String by project
+
 val CI: Boolean = "true".equals(System.getenv("CI"))
 val TOKEN: String = System.getenv("TOKEN") ?: "DRY"
-val GITHUB_REF: String = File(".git/HEAD").readLines()[0].replaceFirst(Regex("^ref: "),"")
+val GITHUB_REF: String = File(".git/HEAD").readLines()[0].replaceFirst(Regex("^ref: "), "")
 val isMaster: Boolean = GITHUB_REF.equals("refs/heads/master")
-val isLocal: Boolean = !CI
-val snapshotVersion: String = "0." + String.format("%08x", GITHUB_REF.hashCode()) + "-SNAPSHOT"
 
-val demoLibVersion = if (isMaster && !isLocal) "3.0.0" else snapshotVersion
+fun bbbGroup(group: String): String {
+    return if (CI && isMaster) group else "snapshots." + group
+}
 
-group = "demo-app"
-version = if (isMaster && !isLocal) VERSION else snapshotVersion
+fun bbbVersion(version: String): String {
+    return if (CI && isMaster) version else String.format("%08x", GITHUB_REF.hashCode()) + "-SNAPSHOT"
+}
+
+fun bbbRepo(group: String): String {
+    return if (CI && isMaster) "$COMPANY/$group" else "$COMPANY/tmp-snapshots"
+}
+
+fun bbbRef(org: String): String {
+    val parts = org.split(":")
+    val g = bbbGroup(parts[0])
+    val a = parts[1]
+    val v = bbbVersion(parts[2])
+    return "$g:$a:$v"
+}
+
+group = bbbGroup(GROUP)
+version = bbbVersion(VERSION)
+var packageRepo = bbbRepo(GROUP)
 
 println("@@@@@@@@@@@     GITHUB_REF=$GITHUB_REF")
 println("@@@@@@@@@@@        version=$version")
-println("@@@@@@@@@@@ demoLibVersion=$demoLibVersion")
+println("@@@@@@@@@@@          group=$group")
+println("@@@@@@@@@@@    packageRepo=$packageRepo")
 
 plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
@@ -33,8 +55,7 @@ repositories {
     jcenter()
     mavenLocal()
     maven {
-        name = "GitHubPackages"
-        url = uri("https://maven.pkg.github.com/ModelingValueGroup/demo-lib")
+        url = uri("https://maven.pkg.github.com/$packageRepo")
         credentials {
             username = "" // can be anything but plugin requires it
             password = TOKEN
@@ -51,7 +72,7 @@ dependencies {
 
     // This dependency is used by the application.
     implementation("com.google.guava:guava:29.0-jre")
-    implementation("demo-lib:lib:$demoLibVersion")
+    implementation(bbbRef(dep1))
 }
 
 application {
