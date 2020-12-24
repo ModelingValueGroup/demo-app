@@ -78,7 +78,7 @@ repositories {
     jcenter()
     mavenLocal()
     maven {
-        url = uri("https://maven.pkg.github.com/$COMPANY")
+        url = uri("https://maven.pkg.github.com/$packageRepo")
         credentials {
             username = "" // can be anything but plugin requires it
             password = TOKEN
