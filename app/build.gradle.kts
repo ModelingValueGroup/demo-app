@@ -5,11 +5,13 @@
  * For more details take a look at the 'Building Java & JVM projects' chapter in the Gradle
  * User Manual available at https://docs.gradle.org/6.7.1/userguide/building_java_projects.html
  */
+import java.nio.file.Files
+import java.nio.file.Paths
+import java.util.*
+
 val VERSION: String by project
 val GROUP: String by project
 val COMPANY: String by project
-val dep1: String by project
-
 val CI: Boolean = "true".equals(System.getenv("CI"))
 val TOKEN: String = System.getenv("TOKEN") ?: "DRY"
 val GITHUB_REF: String = File(".git/HEAD").readLines()[0].replaceFirst(Regex("^ref: "), "")
@@ -27,17 +29,40 @@ fun bbbRepo(group: String): String {
     return if (CI && isMaster) "$COMPANY/$group" else "$COMPANY/tmp-snapshots"
 }
 
-fun bbbRef(org: String): String {
-    val parts = org.split(":")
-    val g = bbbGroup(parts[0])
-    val a = parts[1]
-    val v = bbbVersion(parts[2])
-    return "$g:$a:$v"
+fun bbbRef(ref: String): String {
+    if (ref.startsWith("~")) {
+        val parts = ref.substring(1).split(":")
+        val g = bbbGroup(parts[0])
+        val a = parts[1]
+        val v = bbbVersion(parts[2])
+        return "$g:$a:$v"
+    } else {
+        return ref
+    }
+}
+
+fun fromProperties(dependencyHandlerScope: DependencyHandlerScope) {
+    val props = Properties()
+    Files.newInputStream(Paths.get("gradle.properties")).use {
+        props.load(it)
+    }
+    val implementation = props.get("implementation") as? String
+    if (implementation != null) {
+        implementation.split(";").forEach { dependencyHandlerScope.implementation(bbbRef(it)) }
+    }
+    val testImplementation = props.get("testImplementation") as? String
+    if (testImplementation != null) {
+        testImplementation.split(";").forEach { dependencyHandlerScope.testImplementation(bbbRef(it)) }
+    }
+    val testRuntimeOnly = props.get("testRuntimeOnly") as? String
+    if (testRuntimeOnly != null) {
+        testRuntimeOnly.split(";").forEach { dependencyHandlerScope.testRuntimeOnly(bbbRef(it)) }
+    }
 }
 
 group = bbbGroup(GROUP)
 version = bbbVersion(VERSION)
-var packageRepo = bbbRepo(GROUP)
+val packageRepo = bbbRepo(GROUP)
 
 println("@@@@@@@@@@@     GITHUB_REF=$GITHUB_REF")
 println("@@@@@@@@@@@        version=$version")
@@ -45,17 +70,15 @@ println("@@@@@@@@@@@          group=$group")
 println("@@@@@@@@@@@    packageRepo=$packageRepo")
 
 plugins {
-    // Apply the application plugin to add support for building a CLI application in Java.
     application
     `maven-publish`
 }
 
 repositories {
-    // Use JCenter for resolving dependencies.
     jcenter()
     mavenLocal()
     maven {
-        url = uri("https://maven.pkg.github.com/$packageRepo")
+        url = uri("https://maven.pkg.github.com/$COMPANY")
         credentials {
             username = "" // can be anything but plugin requires it
             password = TOKEN
@@ -64,23 +87,13 @@ repositories {
 }
 
 dependencies {
-    // Use JUnit Jupiter API for testing.
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.6.2")
-
-    // Use JUnit Jupiter Engine for testing.
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
-
-    // This dependency is used by the application.
-    implementation("com.google.guava:guava:29.0-jre")
-    implementation(bbbRef(dep1))
+    fromProperties(this)
 }
 
 application {
-    // Define the main class for the application.
     mainClass.set("demo.app.App")
 }
 
 tasks.test {
-    // Use junit platform for unit tests.
     useJUnitPlatform()
 }
