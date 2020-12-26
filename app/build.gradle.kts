@@ -43,7 +43,7 @@ fun bbbRef(ref: String): String {
 
 fun fromProperties(dependencyHandlerScope: DependencyHandlerScope) {
     val props = Properties()
-    Files.newInputStream(Paths.get("gradle.properties")).use {
+    Files.newInputStream(rootProject.projectDir.toPath().resolve("gradle.properties")).use {
         props.load(it)
     }
     val implementation = props.get("implementation") as? String
