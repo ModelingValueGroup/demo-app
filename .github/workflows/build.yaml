@@ -7,6 +7,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-20.04
+    if: "!contains(github.event.head_commit.message, '[no-ci]')"
     env:
       TOKEN: "${{secrets.GITHUB_TOKEN}}"
       CI: "true"
@@ -22,6 +23,5 @@ jobs:
       ################################################################################
       - name: "build and run"
         run: |
-          ./gradlew installDist
+          ./gradlew --scan --info installDist
           ./app/build/install/app/bin/app
-
