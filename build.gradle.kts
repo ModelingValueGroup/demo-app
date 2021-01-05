@@ -20,5 +20,5 @@ group = GROUP
 version = VERSION
 
 plugins {
-    id("org.modelingvalue.gradle.corrector") version "0.3.47"
+    id("org.modelingvalue.gradle.corrector") version "0.3.48"
 }
