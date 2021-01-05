@@ -15,47 +15,10 @@
 
 val VERSION: String by project
 val GROUP: String by project
-val TOKEN: String = System.getenv("TOKEN") ?: "DRY"
 
 group = GROUP
 version = VERSION
 
 plugins {
-    application
-    `maven-publish`
-}
-
-repositories {
-    jcenter()
-    mavenLocal()
-    maven {
-        url = uri("https://maven.pkg.github.com/ModelingValueGroup/packages")
-        credentials {
-            username = "" // can be anything but plugin requires it
-            password = TOKEN
-        }
-    }
-    maven {
-        url = uri("https://maven.pkg.github.com/ModelingValueGroup/packages-snapshots")
-        credentials {
-            username = "" // can be anything but plugin requires it
-            password = TOKEN
-        }
-    }
-}
-
-dependencies {
-    gradleApi()
-    implementation("demo-lib:lib:3.1.0-BRANCH")
-    implementation("com.google.guava:guava:29.0-jre")
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.6.2")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
-}
-
-application {
-    mainClass.set("demo.app.App")
-}
-
-tasks.test {
-    useJUnitPlatform()
+    id("org.modelingvalue.gradle.corrector") version "0.3.46"
 }
