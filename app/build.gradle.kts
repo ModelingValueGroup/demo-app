@@ -15,7 +15,6 @@
 
 val VERSION: String by project
 val GROUP: String by project
-val TOKEN: String = System.getenv("TOKEN") ?: "DRY"
 
 group = GROUP
 version = VERSION
@@ -23,25 +22,6 @@ version = VERSION
 plugins {
     application
     `maven-publish`
-}
-
-repositories {
-    jcenter()
-    mavenLocal()
-    maven {
-        url = uri("https://maven.pkg.github.com/ModelingValueGroup/packages")
-        credentials {
-            username = "" // can be anything but plugin requires it
-            password = TOKEN
-        }
-    }
-    maven {
-        url = uri("https://maven.pkg.github.com/ModelingValueGroup/packages-snapshots")
-        credentials {
-            username = "" // can be anything but plugin requires it
-            password = TOKEN
-        }
-    }
 }
 
 dependencies {
@@ -56,6 +36,7 @@ application {
     mainClass.set("demo.app.App")
 }
 
+/////////////////////////// boilerplate
 tasks.test {
     useJUnitPlatform()
 }
