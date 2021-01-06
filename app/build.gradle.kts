@@ -25,18 +25,11 @@ plugins {
 }
 
 dependencies {
-    gradleApi()
     implementation("demo-lib:lib:3.1.0-BRANCHED")
-    implementation("com.google.guava:guava:29.0-jre")
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.6.2")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
 }
 
 application {
     mainClass.set("demo.app.App")
-}
-
-/////////////////////////// boilerplate
-tasks.test {
-    useJUnitPlatform()
 }
