@@ -9,7 +9,8 @@ jobs:
     runs-on: ubuntu-20.04
     if: "!contains(github.event.head_commit.message, '[no-ci]')"
     env:
-      TOKEN: "${{secrets.GITHUB_TOKEN}}"
+      ALLREP_TOKEN: "${{secrets.ALLREP_TOKEN}}"
+      TOKEN: "${{secrets.ALLREP_TOKEN}}"
       CI: "true"
     steps:
       - uses: actions/checkout@v2.3.4
