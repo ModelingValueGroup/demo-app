@@ -26,8 +26,6 @@ plugins {
 
 dependencies {
     implementation("demo-lib:lib:3.1.0-BRANCHED")
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.6.2")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
 }
 
 application {
