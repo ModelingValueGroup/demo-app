@@ -22,7 +22,8 @@ jobs:
           java-version: 11
 
       ################################################################################
-      - name: "build and run"
-        run: |
-          ./gradlew --scan --info installDist
-          ./app/build/install/app/bin/app
+      - name: "build"
+        run: ./gradlew --scan
+
+      - name: "run"
+        run: ./app/build/install/app/bin/app
