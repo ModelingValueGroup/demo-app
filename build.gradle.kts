@@ -19,4 +19,4 @@ val GROUP: String by project
 group = GROUP
 version = VERSION
 
-defaultTasks("test", "installDist")
+defaultTasks("mvgCorrector", "test", "installDist", "mvgTagger")
