@@ -19,7 +19,7 @@ plugins {
 }
 
 dependencies {
-    implementation("demo-lib:lib:3.1.0-BRANCHED")
+    implementation("demo-lib:lib:3.1.16-BRANCHED")
 }
 
 application {
